@@ -19,7 +19,7 @@
         $comment = trim($_POST["comment"]);
 
         // Check that data was sent to the mailer.
-        if ( empty($title) || empty($firstname) || empty($lastname) ||  empty($phone) || empty($email) || $success=="success") {
+        if ( empty($title) || empty($firstname) || empty($lastname) ||  empty($phone) || empty($email)) {
             // Set a 400 (bad request) response code and exit.
             // http_response_code(400);
             echo "<div class='thank_you'>";

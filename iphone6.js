@@ -73,50 +73,7 @@ $(document).ready(function(){
 
 		$(form).submit(function(event) {
 
-		// Serialize the form data.
-		var formData = $(form).serialize();
-
-		$.ajax({
-	    type: 'POST',
-	    url: $(form).attr('action'),
-	    data: { formData : formData, success : "success" }
-	    // data: formData
-
-		}).done(function(response) {
-    // Make sure that the formMessages div has the 'success' class.
-    $(formMessages).removeClass('error');
-    $(formMessages).addClass('success');
-
-    // Set the message text.
-    $(formMessages).html(response);
-
-    // // Clear the form.
-    // $('#name').val('');
-    // $('#email').val('');
-    // $('#message').val('');
-		}).fail(function(data) {
-    // Make sure that the formMessages div has the 'error' class.
-    $(formMessages).removeClass('success');
-    $(formMessages).addClass('error');
-
-    // Set the message text.
-    if (data.responseText !== '') {
-        $(formMessages).text(data.responseText);
-    } else {
-        $(formMessages).text('Oops! An error occured and your message could not be sent.');
-    }
-		});
-
-    // Stop the browser from submitting the form.
-    event.preventDefault();
-    // TODO
-		});
-
-
-
-    $("form").submit(function(){
-
-    	var errors = [];
+			var errors = [];
 
       $title = $("#title").val();
       if(jQuery.inArray($title , ["Mr", "Ms", "Mrs", "None"]) == -1){
@@ -144,7 +101,47 @@ $(document).ready(function(){
     		errors.push("invalid phone");
     	}
 
-    	 $("#div1").empty();
+    	
+
+		// Serialize the form data.
+		if (errors.length>0){
+			var formData = "unsucess";
+		}else{
+			var formData = $(form).serialize();
+		}
+		$.ajax({
+	    type: 'POST',
+	    url: $(form).attr('action'),
+	    data: formData
+		}).done(function(response) {
+    // Make sure that the formMessages div has the 'success' class.
+    $(formMessages).removeClass('error');
+    $(formMessages).addClass('success');
+
+    // Set the message text.
+    $(formMessages).html(response);
+
+    // // Clear the form.
+    // $('#name').val('');
+    // $('#email').val('');
+    // $('#message').val('');
+		}).fail(function(data) {
+    // Make sure that the formMessages div has the 'error' class.
+    $(formMessages).removeClass('success');
+    $(formMessages).addClass('error');
+
+    // Set the message text.
+    if (data.responseText !== '') {
+        $(formMessages).text(data.responseText);
+    } else {
+        $(formMessages).text('Oops! An error occured and your message could not be sent.');
+    }
+		});
+
+    // Stop the browser from submitting the form.
+    event.preventDefault();
+
+    $("#div1").empty();
     	if(errors.length){
     		var list = document.createElement("ul");
 
@@ -160,8 +157,9 @@ $(document).ready(function(){
 
     		return false
     	}
+    // TODO
+		});
 
-    });
 });
 
 function validateLetter(inputtxt){ 
