@@ -1,5 +1,4 @@
 $(document).ready(function(){
-		// alert('start');
 // 		var request;
 
 // 		$("#foo").submit(function(event){
@@ -61,20 +60,19 @@ $(document).ready(function(){
 // });
 
 
-		
+		var request;
     // Get the form.
     var form = $('#formiphone');
 
     // Get the messages div.
     var formMessages = $('#div2');
 
-    // TODO: The rest of the code will go here...
-		
-
+		//	
 		$(form).submit(function(event) {
 
 			var errors = [];
 
+			$(".error_asterisk").empty();
       $title = $("#title").val();
       if(jQuery.inArray($title , ["Mr", "Ms", "Mrs", "None"]) == -1){
         errors.push("invalid title");
@@ -82,22 +80,27 @@ $(document).ready(function(){
 
     	$firstname = $("#firstname").val();
     	if (!validateLetter($firstname)){
+    		// $("#name_error").removeClass("hidden");
+    		$("<span class='error_asterisk'>*</span>").insertAfter("#firstname");
     		errors.push("invalid firstname (only characters)");
     	}
 
     	$lastname = $("#lastname").val();
     	if (!validateLetter($lastname)){
-    		errors.push("invalid lastname (only characters)");
+	    	$("<span class='error_asterisk'>*</span>").insertAfter("#lastname");
+	    	errors.push("invalid lastname (only characters)");
 
     	}
 
     	$email = $("#email").val();
     	if(!validateEmail($email)){
+    		$("<span class='error_asterisk'>*</span>").insertAfter("#email");
     		errors.push("invalid email");
     	}
 
     	$phone = $("#phone").val();
     	if(!validateNumber($phone) || $phone.length < 10){
+    		$("<span class='error_asterisk'>*</span>").insertAfter("#phone");
     		errors.push("invalid phone");
     	}
 
@@ -109,11 +112,16 @@ $(document).ready(function(){
 		}else{
 			var formData = $(form).serialize();
 		}
-		$.ajax({
+
+
+		request = $.ajax({
 	    type: 'POST',
 	    url: $(form).attr('action'),
 	    data: formData
-		}).done(function(response) {
+		});
+
+
+		request.done(function(response) {
     // Make sure that the formMessages div has the 'success' class.
     $(formMessages).removeClass('error');
     $(formMessages).addClass('success');
@@ -125,7 +133,10 @@ $(document).ready(function(){
     // $('#name').val('');
     // $('#email').val('');
     // $('#message').val('');
-		}).fail(function(data) {
+		})
+
+
+		request.fail(function(data) {
     // Make sure that the formMessages div has the 'error' class.
     $(formMessages).removeClass('success');
     $(formMessages).addClass('error');

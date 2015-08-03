@@ -4,27 +4,6 @@ body{
 	width:100%;
 }
 
-/*#formiphone {
-	width:30%;
-	display:inline-block;
-	border: dotted;
-	margin:auto;
-}
-
-#formiphone table tr td {
-	padding: 10px 20px 2px 30px;
-}
-
-#formiphone table tr td label{
-	font-weight: bold;
-}
-
-
-#formiphone #comment, #formiphone input{
-	width: 100%;
-	resize: none;
-}*/
-
 .header{
 	background-color: #666666;
 	padding:0px;
@@ -101,8 +80,8 @@ h2{
 	margin-bottom:2em;
 }
 
-.error{
-	color:red;
+.thank_you .error{
+	color:red; important!
 }
 
 #div1{
@@ -111,6 +90,16 @@ h2{
   display: table;
   color:purple;
 }
+
+.hidden{
+  visibility: hidden;
+}
+
+.error_asterisk{
+  margin-left:1em;
+  color:red;
+}
+
 
 
 * {

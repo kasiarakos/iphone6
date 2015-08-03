@@ -33,7 +33,7 @@
         $recipient = "kasiarakos@windowslive.com";
 
         // Set the email subject.
-        $subject = "iphone 6 interest from $firstname";
+        $subject = "iphone 6 interest from $firstname $lastname";
 
         // Build the email content.
         $email_content = "";
@@ -56,8 +56,7 @@
         // Send the email.
 
 
-        // if (mail($recipient, $subject, $email_content, $email_headers)) {
-        if(false){
+        if (mail($recipient, $subject, $email_content, $email_headers)) {
             // Set a 200 (okay) response code.
             // http_response_code(200);
             echo "<div class='thank_you'>";
@@ -77,8 +76,10 @@
         } else {
             // Set a 500 (internal server error) response code.
             // http_response_code(500);
-            echo "<div class='thank_you'>";
-                echo "<h2 class = 'error'> Oops! Something went wrong and we couldn't send your message. </h2>";
+            echo "<div class='thank_you error'>";
+                echo "<h2 class= 'error'> Oops! Something went wrong and we couldn't send your message. </h2>";
+                echo "<p> Please refil the form or refresh the page and try again. </p>";
+
             echo "</div>";
         }
 

@@ -43,8 +43,11 @@
 			    <label class="desc" for="firstname">First Name</label>
 			    <div>
 			      <input id="firstname" name="firstname" type="text" class="field text fn" value="" size="8" tabindex="1">
+			      <span id= "name_error" class = "hidden error">*</span>
 			    </div>
+
 			  </div>
+
 
 			  <div>
 			    <label  for="lastname">Last Name</label>
