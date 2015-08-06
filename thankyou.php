@@ -5,7 +5,6 @@
         $title = strip_tags(trim($_POST["title"]));
        
         // Get the form fields and remove whitespace.
-        $success = $_POST['success'];
         $firstname = strip_tags(trim($_POST["firstname"]));
         $firstname = str_replace(array("\r","\n"),array(" "," "),$firstname);
 
@@ -18,7 +17,11 @@
 
         $comment = trim($_POST["comment"]);
 
-        // Check that data was sent to the mailer.
+        // echo "<div class='thank_you'>";
+        //      print_r($_POST);
+        // echo "</div>";
+
+        // // Check that data was sent to the mailer.
         if ( empty($title) || empty($firstname) || empty($lastname) ||  empty($phone) || empty($email)) {
             // Set a 400 (bad request) response code and exit.
             // http_response_code(400);
@@ -43,12 +46,6 @@
         $email_content .= " $firstname $lastname is interested to buy a new Iphone 6 \n";
         $email_content .= "you can contact in $phone or $email \n\n";
         $email_content .= "Message: \n$comment\n";
-
-
-
-
-
-
 
         // Build the email headers.
         $email_headers = "From: $firstname <$email>";
@@ -79,7 +76,6 @@
             echo "<div class='thank_you error'>";
                 echo "<h2 class= 'error'> Oops! Something went wrong and we couldn't send your message. </h2>";
                 echo "<p> Please refil the form or refresh the page and try again. </p>";
-
             echo "</div>";
         }
 

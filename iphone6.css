@@ -9,6 +9,7 @@ body{
 	padding:0px;
 	margin:0px;
 	color:white;
+  min-width:500px;
 
 }
 
@@ -26,10 +27,12 @@ body{
 .header h1 {
 	display:inline-block;
 	position:relative;
-	top:-27px;
+	top: -0.8em;
 	margin:0px;
 	padding:0px;
 }
+
+
 
 .infoiphone{
 	font-size: 20px;
@@ -80,7 +83,7 @@ h2{
 	margin-bottom:2em;
 }
 
-.thank_you .error{
+.error{
 	color:red; important!
 }
 
@@ -100,6 +103,35 @@ h2{
   color:red;
 }
 
+ ul.menu{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+ul.menu li {
+  float: left;
+}
+
+ul.menu li a {
+    display: block;
+    width: 60px;
+    color:white;
+    text-align:center;
+}
+
+ul.menu li a:hover {
+ color: #cccccc;
+}
+
+.main_menu{
+  display:inline-block;
+  position:relative;
+  top: -1.5em;
+  margin-left: 2em
+}
+
 
 
 * {
@@ -108,18 +140,12 @@ h2{
   box-sizing: border-box;
 }
 
-main_container {
-  padding: 20px 15%;
-}
-form header {
-  margin: 0 0 20px 0; 
-}
-form header div {
-  font-size: 90%;
-  color: #999;
-}
-form header h2 {
-  margin: 0 0 5px 0;
+#form_container {
+  background-color: #cccccc;
+  width:80%;
+  margin:auto;
+  border: dotted;
+  padding: 1.5em;
 }
 form > div {
   clear: both;

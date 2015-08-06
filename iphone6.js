@@ -1,175 +1,123 @@
 $(document).ready(function(){
-// 		var request;
 
-// 		$("#foo").submit(function(event){
+  var request;
 
-//     // Abort any pending request
-//     if (request) {
-//         request.abort();
-//     }
-//     // setup some local variables
-//     var $form = $(this);
+  // Get the form.
+  var form = $('#formiphone');
 
-//     // Let's select and cache all the fields
-//     var $inputs = $form.find("input, select, button, textarea");
+  // Get the messages div.
+  var formMessages = $('#div2');
 
-//     // Serialize the data in the form
-//     var serializedData = $form.serialize();
+	// get the submition of the form.
+	$(form).submit(function(event) {
+
+    //array of input errors.
+  	var errors = [];
 
 
-//     // Let's disable the inputs for the duration of the Ajax request.
-//     // Note: we disable elements AFTER the form data has been serialized.
-//     // Disabled form elements will not be serialized.
-//     $inputs.prop("disabled", true);
-
-//     // Fire off the request to /form.php
-//     request = $.ajax({
-//         url: "iphone6.php",
-//         type: "post",
-//         data: serializedData,
-//         function(data) {
-//         $("#div2").html(
-//           "Favorite beverage: " + data["favorite_beverage"] + "<br />Favorite restaurant: " + data["favorite_restaurant"] + "<br />Gender: " + data["gender"] + "<br />JSON: " + data["json"]
-//         );
-
-//         alert("Form submitted successfully.\nReturned json: " + data["json"]);
-//       }
-//     });
-
-//     // Callback handler that will be called on success
-//     request.done(function (response, textStatus, jqXHR){
-//         // Log a message to the console
-//         console.log("Hooray, it worked!");
-//     });
-
-//     // Callback handler that will be called on failure
-//     request.fail(function (jqXHR, textStatus, errorThrown){
-//         // Log the error to the console
-//         console.log("Hooray, did not worked!");
-//     });
-
-//     // Callback handler that will be called regardless
-//     // if the request failed or succeeded
-//     request.always(function () {
-//         // Reenable the inputs
-//         $inputs.prop("disabled", false	);
-//     });
-
-//     // Prevent default posting of form
-//     event.preventDefault();
-// });
+    $("#div2").empty();
 
 
-		var request;
-    // Get the form.
-    var form = $('#formiphone');
+    //clear the asterisks and starts validation of input.
+  	$(".error_asterisk").empty();
 
-    // Get the messages div.
-    var formMessages = $('#div2');
+    $title = $("#title").val();
+    if(jQuery.inArray($title , ["Mr", "Ms", "Mrs", "None"]) == -1){
+      errors.push("invalid title");
+  	}
 
-		//	
-		$(form).submit(function(event) {
+  	$firstname = $("#firstname").val();
+  	if (!validateLetter($firstname)){
+  		// $("#name_error").removeClass("hidden");
+  		$("<span class='error_asterisk'>*</span>").insertAfter("#firstname");
+  		errors.push("invalid first name (only characters)");
+  	}
 
-			var errors = [];
+  	$lastname = $("#lastname").val();
+  	if (!validateLetter($lastname)){
+    	$("<span class='error_asterisk'>*</span>").insertAfter("#lastname");
+    	errors.push("invalid last name (only characters)");
+  	}
 
-			$(".error_asterisk").empty();
-      $title = $("#title").val();
-      if(jQuery.inArray($title , ["Mr", "Ms", "Mrs", "None"]) == -1){
-        errors.push("invalid title");
-    	}
+  	$email = $("#email").val();
+  	if(!validateEmail($email)){
+  		$("<span class='error_asterisk'>*</span>").insertAfter("#email");
+  		errors.push("invalid email");
+  	}
 
-    	$firstname = $("#firstname").val();
-    	if (!validateLetter($firstname)){
-    		// $("#name_error").removeClass("hidden");
-    		$("<span class='error_asterisk'>*</span>").insertAfter("#firstname");
-    		errors.push("invalid firstname (only characters)");
-    	}
+  	$phone = $("#phone").val();
+  	if(!validateNumber($phone) || $phone.length < 10){
+  		$("<span class='error_asterisk'>*</span>").insertAfter("#phone");
+  		errors.push("invalid phone");
+  	}
 
-    	$lastname = $("#lastname").val();
-    	if (!validateLetter($lastname)){
-	    	$("<span class='error_asterisk'>*</span>").insertAfter("#lastname");
-	    	errors.push("invalid lastname (only characters)");
+    
 
-    	}
+  	// Serialize the form data.
+  	if (errors.length>0){
+  		var formData = "unsucess";
+  	}else{
+  		var formData = $(form).serialize();
+  	}
 
-    	$email = $("#email").val();
-    	if(!validateEmail($email)){
-    		$("<span class='error_asterisk'>*</span>").insertAfter("#email");
-    		errors.push("invalid email");
-    	}
+    var $ajaxsuccess = true;
 
-    	$phone = $("#phone").val();
-    	if(!validateNumber($phone) || $phone.length < 10){
-    		$("<span class='error_asterisk'>*</span>").insertAfter("#phone");
-    		errors.push("invalid phone");
-    	}
-
-    	
-
-		// Serialize the form data.
-		if (errors.length>0){
-			var formData = "unsucess";
-		}else{
-			var formData = $(form).serialize();
-		}
+  	request = $.ajax({
+      type: 'POST',
+      url: $(form).attr('action'),
+      data: formData
+  	});
 
 
-		request = $.ajax({
-	    type: 'POST',
-	    url: $(form).attr('action'),
-	    data: formData
-		});
+  	request.done(function(response) {
+      // Make sure that the formMessages div has the 'success' class.
+      $(formMessages).removeClass('error');
+      $(formMessages).addClass('success');
 
+      // Set the message text.
+      $(formMessages).html(response);
+  	})
 
-		request.done(function(response) {
-    // Make sure that the formMessages div has the 'success' class.
-    $(formMessages).removeClass('error');
-    $(formMessages).addClass('success');
+  	request.fail(function(data) {
+      $ajaxsuccess = false;
 
-    // Set the message text.
-    $(formMessages).html(response);
+      // Make sure that the formMessages div has the 'error' class.
+      $(formMessages).removeClass('success');
+      $(formMessages).addClass('error');
 
-    // // Clear the form.
-    // $('#name').val('');
-    // $('#email').val('');
-    // $('#message').val('');
-		})
-
-
-		request.fail(function(data) {
-    // Make sure that the formMessages div has the 'error' class.
-    $(formMessages).removeClass('success');
-    $(formMessages).addClass('error');
-
-    // Set the message text.
-    if (data.responseText !== '') {
+      // Set the message text.
+      if (data.responseText !== '') {
         $(formMessages).text(data.responseText);
-    } else {
+      } else {
         $(formMessages).text('Oops! An error occured and your message could not be sent.');
-    }
-		});
+      }
+  	});
 
     // Stop the browser from submitting the form.
     event.preventDefault();
 
     $("#div1").empty();
-    	if(errors.length){
-    		var list = document.createElement("ul");
+  	if(errors.length>0){
+  		var list = document.createElement("ul");
 
-    		errors.forEach(function(entry) {
-	    		var item = document.createElement("li");
-	    		list.appendChild(item)
-					var node = document.createTextNode(entry);
-					item.appendChild(node);
-				});
+  		errors.forEach(function(entry) {
+    		var item = document.createElement("li");
+    		list.appendChild(item)
+  			var node = document.createTextNode(entry);
+  			item.appendChild(node);
+  		});
 
-				var element = document.getElementById("div1");
-				element.appendChild(list);
-
-    		return false
-    	}
-    // TODO
-		});
+  		var element = document.getElementById("div1");
+  		element.appendChild(list);
+  	}
+    else{
+      // save to google doc only if ajax call was successW
+      if($ajaxsuccess){
+        postToGoogle();
+        $("#form_container").hide();
+      }
+    }
+	});
 
 });
 
@@ -186,4 +134,13 @@ function validateNumber(inputtxt){
 function validateEmail(email) {
   var re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
   return re.test(email);
+}
+
+function postToGoogle() {
+  $.ajax({
+    url: "https://docs.google.com/forms/d/1xM9bsrcAPkn_JNtqcPjsSB2-AG_9hP1_XwRv31yeZpo/formResponse",
+    data: {"entry.294582486": $("#title").val(), "entry.147217157": $("#firstname").val(), "entry.2109413729": $("#lastname").val(), "entry.1268817942": $("#email").val(), "entry.1219073050": $("#phone").val(), "entry.1587645061": $("#comment").val()},
+    type: "POST",
+    dataType: "xml"
+  });
 }
